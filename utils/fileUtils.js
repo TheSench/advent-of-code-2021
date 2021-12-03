@@ -15,6 +15,11 @@ function readFile(directory, filename) {
     });
 }
 
+function readInput(directory) {
+    return readFile(directory, 'input.txt');
+}
+
 module.exports = {
-    readFile
+    readFile,
+    readInput
 };

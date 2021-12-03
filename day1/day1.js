@@ -4,7 +4,7 @@ function identifyChange(previous, next) {
     } else if (previous > next) {
         return 'decrease';
     } else {
-        return 'same';
+        return 'no change';
     }
 }
 
@@ -16,7 +16,21 @@ function identifyChanges(input) {
     return changes;
 }
 
+function sumsOfSlidingWindows(input) {
+    const windowSums = [];
+    for (let i = 0; i < input.length - 2; i++) {
+        const nextWindow = input.slice(i, i + 3).reduce(sum);
+        windowSums.push(nextWindow);
+    }
+    return windowSums;
+}
+
+function sum(a, b) {
+    return a + b;
+}
+
 module.exports = {
     identifyChange,
-    identifyChanges
+    identifyChanges,
+    sumsOfSlidingWindows
 };

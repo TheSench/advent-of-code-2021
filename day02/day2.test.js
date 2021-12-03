@@ -1,4 +1,4 @@
-const { parseCommand, addDistances } = require('./day2');
+const { parseCommand, addDistances, parseCommandWithAim } = require('./day2');
 
 describe('day2 functions', () => {
     describe('parseCommand', () => {
@@ -48,5 +48,49 @@ describe('day2 functions', () => {
                 vertical: 1
             });
         })
+    });
+
+    describe('parseCommandWithAim', () => {
+        it('should parse "forward" as increasing horizontal distance by x and vertical distance by x*aim', () => {
+            const position = { horizontal: 2, vertical: 3, aim: 5 };
+            const rawCommand = "forward 5";
+
+            const command = parseCommandWithAim(rawCommand);
+            const result = command(position);
+
+            expect(result).toEqual({
+                horizontal: 7,
+                vertical: 28,
+                aim: 5
+            });
+        });
+
+        it('should parse "up" as decreasing aim distance by x', () => {
+            const position = { horizontal: 2, vertical: 3, aim: 5 };
+            const rawCommand = "up 4";
+
+            const command = parseCommandWithAim(rawCommand);
+            const result = command(position);
+
+            expect(result).toEqual({
+                horizontal: 2,
+                vertical: 3,
+                aim: 1
+            });
+        });
+
+        it('should parse "down" as increasing aim distance by x', () => {
+            const position = { horizontal: 2, vertical: 3, aim: 5 };
+            const rawCommand = "down 2";
+
+            const command = parseCommandWithAim(rawCommand);
+            const result = command(position);
+
+            expect(result).toEqual({
+                horizontal: 2,
+                vertical: 3,
+                aim: 7
+            });
+        });
     });
 });

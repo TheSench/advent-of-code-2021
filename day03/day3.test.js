@@ -1,0 +1,86 @@
+const { mostCommonBits, convertToBits, bitsToDecimal } = require('./day3');
+
+describe('day3 functions', () => {
+    describe('convertToBits', () => {
+        it("converts a string of 1's and 0's to bits", () => {
+            const rawInput = '1001101';
+
+            const result = convertToBits(rawInput);
+
+            expect(result).toEqual([1,0,0,1,1,0,1]);
+        });
+    });
+
+    describe('mostCommonBits', () => {
+        it.each([0, 1])('given just %i, returns %i', (num) => {
+            const bits = [[num]];
+
+            const result = mostCommonBits(bits);
+
+            expect(result).toEqual([num]);
+        });
+
+        it('given 0,0,1, returns 0', () => {
+            const bits = [[0],[0],[1]];
+
+            const result = mostCommonBits(bits);
+
+            expect(result).toEqual([0]);
+        });
+
+        it('given 0,1,1, returns 1', () => {
+            const bits = [[0],[1],[1]];
+
+            const result = mostCommonBits(bits);
+
+            expect(result).toEqual([1]);
+        });
+
+        it('given numbers in the example, returns expected result', () => {
+            const bits = [
+                [0,0,1,0,0],
+                [1,1,1,1,0],
+                [1,0,1,1,0],
+                [1,0,1,1,1],
+                [1,0,1,0,1],
+                [0,1,1,1,1],
+                [0,0,1,1,1],
+                [1,1,1,0,0],
+                [1,0,0,0,0],
+                [1,1,0,0,1],
+                [0,0,0,1,0],
+                [0,1,0,1,0]
+            ];
+
+            const result = mostCommonBits(bits);
+
+            expect(result).toEqual([1,0,1,1,0]);
+        });
+    });
+
+    describe('bitsToDecimal', () => {
+        it.each([0, 1])('given %i, should return %i', (num) => {
+            const bits = [num];
+
+            const result = bitsToDecimal(bits);
+
+            expect(result).toEqual(num);
+        });
+
+        it('given 11, should return 3', () => {
+            const bits = [1,1];
+
+            const result = bitsToDecimal(bits);
+
+            expect(result).toEqual(3);
+        });
+
+        it('given 10110, should return 22', () => {
+            const bits = [1,0,1,1,0];
+
+            const result = bitsToDecimal(bits);
+
+            expect(result).toEqual(22);
+        });
+    });
+});

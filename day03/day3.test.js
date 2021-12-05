@@ -1,4 +1,4 @@
-const { mostCommonBits, convertToBits, bitsToDecimal } = require('./day3');
+const { mostCommonBits, convertToBits, bitsToDecimal, groupByBit, reduceBitArrays } = require('./day3');
 
 describe('day3 functions', () => {
     describe('convertToBits', () => {
@@ -81,6 +81,81 @@ describe('day3 functions', () => {
             const result = bitsToDecimal(bits);
 
             expect(result).toEqual(22);
+        });
+    });
+
+    describe('groupByBit', () => {
+        it('groups bitArrays by bit position 0', () => {
+            const bitArrays = [
+                [0,1,1,0,1],
+                [1,0,1,1,0],
+                [1,1,0,0,1],
+                [1,0,0,1,0],
+                [0,1,1,0,1]
+            ];
+
+            const result = groupByBit(bitArrays, 0);
+
+            expect(result[0]).toEqual([
+                [0,1,1,0,1],
+                [0,1,1,0,1]
+            ]);
+            expect(result[1]).toEqual([
+                [1,0,1,1,0],
+                [1,1,0,0,1],
+                [1,0,0,1,0]
+            ]);
+        });
+
+        it('groups bitArrays by bit position 2', () => {
+            const bitArrays = [
+                [0,1,1,0,1],
+                [1,0,1,1,0],
+                [1,1,0,0,1],
+                [1,0,0,1,0],
+                [0,1,1,0,1]
+            ];
+
+            const result = groupByBit(bitArrays, 2);
+
+            expect(result[0]).toEqual([
+                [1,1,0,0,1],
+                [1,0,0,1,0]
+            ]);
+            expect(result[1]).toEqual([
+                [0,1,1,0,1],
+                [1,0,1,1,0],
+                [0,1,1,0,1]
+            ]);
+        });
+    });
+
+    describe('reduceBitArrays', () => {
+        const EXAMPLE_INPUT = [
+            [0,0,1,0,0],
+            [1,1,1,1,0],
+            [1,0,1,1,0],
+            [1,0,1,1,1],
+            [1,0,1,0,1],
+            [0,1,1,1,1],
+            [0,0,1,1,1],
+            [1,1,1,0,0],
+            [1,0,0,0,0],
+            [1,1,0,0,1],
+            [0,0,0,1,0],
+            [0,1,0,1,0]
+        ];
+
+        it('produces correct maximum from example', () => {
+            const result = reduceBitArrays(EXAMPLE_INPUT, 1);
+            
+            expect(result).toEqual([1,0,1,1,1]);
+        });
+
+        it('produces correct minimum from example', () => {
+            const result = reduceBitArrays(EXAMPLE_INPUT, 0);
+
+            expect(result).toEqual([0,1,0,1,0]);
         });
     });
 });

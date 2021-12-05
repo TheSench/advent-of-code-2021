@@ -19,8 +19,29 @@ function bitsToDecimal(bits) {
     return decimal;
 }
 
+function groupByBit(bitArrays, bit) {
+    return bitArrays.reduce((groups, next) => {
+        const group = next[bit];
+        groups[group].push(next);
+        return groups;
+    }, [[],[]]);
+}
+
+function reduceBitArrays(bitArrays, choice) {
+    let bitArraySize = bitArrays[0].length;
+    let chosen = bitArrays;
+    for (let i = 0; i < bitArraySize && chosen.length > 1; i++) {
+        let groups = groupByBit(chosen, i)
+            .sort((a, b) => a.length - b.length);
+        chosen = groups[choice];
+    }
+    return chosen[0];
+}
+
 module.exports = {
     convertToBits,
     mostCommonBits,
-    bitsToDecimal
+    bitsToDecimal,
+    groupByBit,
+    reduceBitArrays
 };

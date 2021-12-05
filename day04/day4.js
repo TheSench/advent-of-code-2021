@@ -9,6 +9,7 @@ function parseBoards(lines) {
     let row = 0;
     lines.forEach(line => {
         if (line === '') {
+            addBoard(boards, currentBoard, 'all');
             currentBoard = {
                 rows: [],
                 numbers: {}
@@ -24,6 +25,9 @@ function parseBoards(lines) {
             row++;
         }
     });
+    if (row > 0) {
+        addBoard(boards, currentBoard, 'all');
+    }
 
     return boards;
 }
@@ -73,6 +77,23 @@ function findFirstWinner(boards, numbers) {
     }
 }
 
+function findLastWinner(boards, numbers) {
+    for(let number of numbers) {
+        let boardsWithNum = boards[number];
+        for(let board of boardsWithNum) {
+            const [row, col] = board.numbers[number];
+            board.rows[row][col] = 'x';
+            if (won(board)) {
+                if (boards['all'].length > 1) {
+                    remove(boards, board);
+                } else {
+                    return [board, number];
+                }
+            }
+        }
+    }
+}
+
 function addBoard(boards, board, num) {
     const boardsForNum = boards[num] || [];
     boardsForNum.push(board);
@@ -91,9 +112,28 @@ function calculateScore(board) {
     return score;
 }
 
+function remove(boards, board) {
+    for(var row of board.rows) {
+        for(var cell of row) {
+            if (cell !== 'x') {
+                removeAt(boards, board, cell);
+            }
+        }
+    }
+    removeAt(boards, board, 'all');
+}
+
+function removeAt(boards, board, key) {
+    const index = boards[key].indexOf(board);
+    if (index >= 0) {
+        boards[key].splice(index, 1);
+    }
+}
+
 module.exports = {
     parseBoards,
     won,
     findFirstWinner,
+    findLastWinner,
     calculateScore
 };
